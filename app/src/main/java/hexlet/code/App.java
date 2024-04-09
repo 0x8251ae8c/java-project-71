@@ -11,7 +11,7 @@ import java.io.File;
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "1.0",
         description = "Compares two configuration files and shows a difference.")
 
-public class App implements Callable<Integer>{
+public class App implements Callable<Integer> {
     @Parameters(index = "0", description = "path to first file")
     private File filepath1;
 

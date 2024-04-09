@@ -25,8 +25,8 @@ public class Differ {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Map<String, String> map1 = mapper.readValue(Files.readString(file1), new TypeReference<>() {});
-        Map<String, String> map2 = mapper.readValue(Files.readString(file2), new TypeReference<>() {});
+        Map<String, String> map1 = mapper.readValue(Files.readString(file1), new TypeReference<>() { });
+        Map<String, String> map2 = mapper.readValue(Files.readString(file2), new TypeReference<>() { });
         Map<String, String> sortedMap = new TreeMap<>(map1);
         sortedMap.putAll(map2);
 
