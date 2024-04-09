@@ -51,7 +51,7 @@ public class Differ {
             }
         }
 
-        result += "}\n";
+        result += "}";
 
         return result;
     }
