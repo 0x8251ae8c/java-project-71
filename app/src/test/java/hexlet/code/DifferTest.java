@@ -1,11 +1,11 @@
 package hexlet.code;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.nio.file.Files;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DifferTest {
     private static File filepath1;
