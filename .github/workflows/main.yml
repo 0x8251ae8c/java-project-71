@@ -22,5 +22,3 @@ jobs:
           gradle-version: 8.3
           arguments: build
           build-root-directory: app
-      - name: Build with Gradle
-        run: ./gradlew build
