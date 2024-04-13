@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 public class Differ {
     public static String generate(File filepath1, File filepath2) throws Exception {
@@ -23,10 +24,26 @@ public class Differ {
             throw new Exception("File '" + file2 + "' does not exist");
         }
 
-        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> map1 = null;
+        Map<String, String> map2 = null;
 
-        Map<String, String> map1 = mapper.readValue(Files.readString(file1), new TypeReference<>() { });
-        Map<String, String> map2 = mapper.readValue(Files.readString(file2), new TypeReference<>() { });
+        var fileType = getFileExtension(file1);
+
+        switch (fileType) {
+            case "json":
+                ObjectMapper jsonMapper = new ObjectMapper();
+                map1 = jsonMapper.readValue(Files.readString(file1), new TypeReference<>() { });
+                map2 = jsonMapper.readValue(Files.readString(file2), new TypeReference<>() { });
+                break;
+            case "yml":
+                ObjectMapper yamlMapper = new YAMLMapper();
+                map1 = yamlMapper.readValue(Files.readString(file1), new TypeReference<>() { });
+                map2 = yamlMapper.readValue(Files.readString(file2), new TypeReference<>() { });
+                break;
+            default:
+                return null;
+        }
+
         Map<String, String> sortedMap = new TreeMap<>(map1);
         sortedMap.putAll(map2);
 
@@ -54,5 +71,9 @@ public class Differ {
         result += "}";
 
         return result;
+    }
+
+    private static String getFileExtension(Path file) {
+        return file.getFileName().toString().split("\\.")[1];
     }
 }
