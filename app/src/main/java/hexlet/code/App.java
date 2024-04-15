@@ -18,12 +18,12 @@ public class App implements Callable<Integer> {
     @Parameters(index = "1", description = "path to second file")
     private File filepath2;
 
-    @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
-    private String format = "stylish";
+    @Option(names = {"-f", "--format"}, defaultValue = "stylish", description = "output format [default: stylish]")
+    private String format;
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf(Differ.generate(filepath1, filepath2));
+        System.out.printf(Differ.generate(filepath1, filepath2) + "\n");
         return 0;
     }
 
