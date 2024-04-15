@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public class Differ {
     public static String generate(File filepath1, File filepath2) throws Exception {
-        String result = "";
+        Formatter formatter = new Formatter();
 
         Map<String, Object> map1 = Parser.parse(filepath1);
         Map<String, Object> map2 = Parser.parse(filepath2);
@@ -22,18 +22,17 @@ public class Differ {
             String value2 = String.valueOf(map2.get(key));
 
             if (!keys2.contains(key)) {
-                result += "  - " + key + ": " + value1 + "\n";
+                formatter.removeValue(key, value1);
             } else if (!keys1.contains(key)) {
-                result += "  + " + key + ": " + value2 + "\n";
+                formatter.insertValue(key, value2);
             } else {
                 if (value1.equals(value2)) {
-                    result += "    " + key + ": " + value1 + "\n";
+                    formatter.keepValue(key, value1);
                 } else {
-                    result += "  - " + key + ": " + value1 + "\n";
-                    result += "  + " + key + ": " + value2 + "\n";
+                    formatter.changeValue(key, value1, value2);
                 }
             }
         }
-        return "{\n" + result + "}";
+        return formatter.toString();
     }
 }
