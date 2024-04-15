@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 public class Parser {
-    public static Map<String, String> parse(File filepath) throws Exception {
+    public static Map<String, Object> parse(File filepath) throws Exception {
         Path file = Paths.get(filepath.toURI()).toAbsolutePath().normalize();
         if (!Files.exists(file)) {
             throw new Exception("File '" + file + "' does not exist");
