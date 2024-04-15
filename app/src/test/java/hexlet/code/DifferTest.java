@@ -1,6 +1,5 @@
 package hexlet.code;
 
-//import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.nio.file.Files;
@@ -33,5 +32,4 @@ class DifferTest {
         String actual = Differ.generate(filepath1, filepath2);
         assertEquals(expected, actual);
     }
-
 }
