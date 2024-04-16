@@ -7,7 +7,11 @@ import java.util.TreeMap;
 
 public class Differ {
     public static String generate(File filepath1, File filepath2) throws Exception {
-        Formatter formatter = new Formatter();
+        return generate(filepath1, filepath2, "stylish");
+    }
+
+    public static String generate(File filepath1, File filepath2, String format) throws Exception {
+        var formatter = new Formatter();
 
         Map<String, Object> map1 = Parser.parse(filepath1);
         Map<String, Object> map2 = Parser.parse(filepath2);
