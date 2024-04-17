@@ -1,39 +1,36 @@
 package hexlet.code;
 
+import java.util.Map;
+
 public class Formatter {
-    private final StringBuffer sb;
+    public static String generate(Map<String, Object> map1,
+                                  Map<String, Object> map2,
+                                  Map<String, String> diff,
+                                  String format) {
+        StringBuilder sb = new StringBuilder();
 
-    public Formatter() {
-        sb = new StringBuffer();
-    }
+        for (var key : diff.keySet()) {
+            String valueState = diff.get(key);
 
-    public void insertValue(String key, String value) {
-        format("  + ", key, value);
-    }
+            switch (valueState) {
+                case "removed":
+                    sb.append("  - ").append(key).append(": ").append(map1.get(key)).append("\n");
+                    break;
+                case "added":
+                    sb.append("  + ").append(key).append(": ").append(map2.get(key)).append("\n");
+                    break;
+                case "kept":
+                    sb.append("    ").append(key).append(": ").append(map1.get(key)).append("\n");
+                    break;
+                case "changed":
+                    sb.append("  - ").append(key).append(": ").append(map1.get(key)).append("\n");
+                    sb.append("  + ").append(key).append(": ").append(map2.get(key)).append("\n");
+                    break;
+                default:
+                    sb.append("  ? unknown diff state\n");
+            }
+        }
 
-    public void removeValue(String key, String value) {
-        format("  - ", key, value);
-    }
-
-    public void changeValue(String key, String value1, String value2) {
-        format("  - ", key, value1);
-        format("  + ", key, value2);
-    }
-
-    public void keepValue(String key, String value) {
-        format("    ", key, value);
-    }
-
-    private void format(String action, String key, String value) {
-        sb.append(action)
-                .append(key)
-                .append(": ")
-                .append(value)
-                .append("\n");
-    }
-
-    @Override
-    public String toString() {
         return "{\n" + sb + "}";
     }
 }
