@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Stylish;
+
 import java.util.Map;
 
 public class Formatter {
@@ -7,30 +9,9 @@ public class Formatter {
                                   Map<String, Object> map2,
                                   Map<String, String> diff,
                                   String format) {
-        StringBuilder sb = new StringBuilder();
-
-        for (var key : diff.keySet()) {
-            String valueState = diff.get(key);
-
-            switch (valueState) {
-                case "removed":
-                    sb.append("  - ").append(key).append(": ").append(map1.get(key)).append("\n");
-                    break;
-                case "added":
-                    sb.append("  + ").append(key).append(": ").append(map2.get(key)).append("\n");
-                    break;
-                case "kept":
-                    sb.append("    ").append(key).append(": ").append(map1.get(key)).append("\n");
-                    break;
-                case "changed":
-                    sb.append("  - ").append(key).append(": ").append(map1.get(key)).append("\n");
-                    sb.append("  + ").append(key).append(": ").append(map2.get(key)).append("\n");
-                    break;
-                default:
-                    sb.append("  ? unknown diff state\n");
-            }
-        }
-
-        return "{\n" + sb + "}";
+        return switch (format) {
+            case "stylish" -> Stylish.generate(map1, map2, diff);
+            default -> throw new IllegalStateException("Unexpected value: " + format);
+        };
     }
 }
