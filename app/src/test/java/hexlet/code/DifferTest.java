@@ -15,7 +15,7 @@ class DifferTest {
     public void testDifferJson() throws Exception {
         filepath1 = new File("./src/test/resources/filepath1.json");
         filepath2 = new File("./src/test/resources/filepath2.json");
-        result = new File("./src/test/resources/result");
+        result = new File("./src/test/resources/differStylish");
 
         String expected = Files.readString(result.toPath());
         String actual = Differ.generate(filepath1, filepath2);
@@ -26,7 +26,7 @@ class DifferTest {
     public void testDifferYaml() throws Exception {
         filepath1 = new File("./src/test/resources/filepath1.yml");
         filepath2 = new File("./src/test/resources/filepath2.yml");
-        result = new File("./src/test/resources/result");
+        result = new File("./src/test/resources/differStylish");
 
         String expected = Files.readString(result.toPath());
         String actual = Differ.generate(filepath1, filepath2);
