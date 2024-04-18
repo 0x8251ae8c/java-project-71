@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Plain;
 import hexlet.code.formatters.Stylish;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ public class Formatter {
                                   String format) {
         return switch (format) {
             case "stylish" -> Stylish.generate(map1, map2, diff);
+            case "plain" -> Plain.generate(map1, map2, diff);
             default -> throw new IllegalStateException("Unexpected value: " + format);
         };
     }
