@@ -12,11 +12,13 @@ class DifferTest {
     private static File filepath2;
     private static File differStylish;
     private static File differPlain;
+    private static File differJson;
 
     @BeforeAll
     public static void beforeAll() {
         differStylish = new File("./src/test/resources/differStylish");
         differPlain = new File("./src/test/resources/differPlain");
+        differJson = new File("./src/test/resources/differJson");
     }
 
     @Test
@@ -26,6 +28,7 @@ class DifferTest {
 
         testStylish(filepath1, filepath2);
         testPlain(filepath1, filepath2);
+        testJson(filepath1, filepath2);
     }
 
     @Test
@@ -35,6 +38,7 @@ class DifferTest {
 
         testStylish(filepath1, filepath2);
         testPlain(filepath1, filepath2);
+        testJson(filepath1, filepath2);
     }
 
     private void testStylish(File fp1, File fp2) throws Exception {
@@ -49,6 +53,13 @@ class DifferTest {
     private void testPlain(File fp1, File fp2) throws Exception {
         String expected = Files.readString(differPlain.toPath());
         String actual = Differ.generate(fp1, fp2, "plain");
+
+        assertEquals(expected, actual);
+    }
+
+    private void testJson(File fp1, File fp2) throws Exception {
+        String expected = Files.readString(differJson.toPath());
+        String actual = Differ.generate(fp1, fp2, "json");
 
         assertEquals(expected, actual);
     }
