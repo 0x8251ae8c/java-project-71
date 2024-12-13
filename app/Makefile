@@ -9,4 +9,7 @@ clean:
 build:
 	@./gradlew clean build installDist
 
+lint:
+	@./gradlew check
+
 .PHONY: build
