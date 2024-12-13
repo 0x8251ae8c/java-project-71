@@ -12,4 +12,7 @@ build:
 lint:
 	@./gradlew check
 
+test:
+	@./gradlew test
+
 .PHONY: build
