@@ -50,14 +50,14 @@ public class Differ {
         return "{\n" + sj + "\n}";
     }
 
-    private static Map<String, String> parseJsonToMap(String filepath) throws Exception{
+    private static Map<String, String> parseJsonToMap(String filepath) throws Exception {
         var mapper = new ObjectMapper();
         var content = readFile(filepath);
 
-        return mapper.readValue(content, new TypeReference<Map<String, String>>(){});
+        return mapper.readValue(content, new TypeReference<Map<String, String>>() { });
     }
 
-    private static String readFile(String filepath) throws Exception{
+    private static String readFile(String filepath) throws Exception {
         Path path = Paths.get(filepath).toAbsolutePath().normalize();
 
         if (!Files.exists(path)) {
