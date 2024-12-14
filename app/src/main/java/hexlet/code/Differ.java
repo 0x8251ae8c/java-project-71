@@ -1,20 +1,13 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
 public class Differ {
     public static String generate(String filepath1, String filepath2) throws Exception {
-        var map1 = parseToMap(filepath1);
-        var map2 = parseToMap(filepath2);
+        var map1 = Parser.parseToMap(filepath1);
+        var map2 = Parser.parseToMap(filepath2);
 
         return compare(map1, map2);
     }
@@ -49,25 +42,5 @@ public class Differ {
                 });
 
         return "{\n" + sj + "\n}";
-    }
-
-    private static Map<String, String> parseToMap(String filepath) throws Exception {
-        var fileType = filepath.split("\\.")[1];
-        var mapper = fileType.equals("json") ? new ObjectMapper() : new YAMLMapper();
-
-        var content = readFile(filepath);
-
-        return mapper.readValue(content, new TypeReference<>() {
-        });
-    }
-
-    private static String readFile(String filepath) throws Exception {
-        Path path = Paths.get(filepath).toAbsolutePath().normalize();
-
-        if (!Files.exists(path)) {
-            throw new Exception("File '" + path + "' does not exist");
-        }
-
-        return Files.readString(path);
     }
 }
