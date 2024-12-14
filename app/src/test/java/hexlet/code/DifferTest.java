@@ -1,6 +1,7 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,10 +20,11 @@ class DifferTest {
         return Files.readString(path).trim();
     }
 
-    @Test
-    public void generate() throws Exception {
-        var filepath1 = getFixturePath("file1.json");
-        var filepath2 = getFixturePath("file2.json");
+    @ParameterizedTest
+    @ValueSource(strings = { "json", "yml" })
+    public void generate(String extension) throws Exception {
+        var filepath1 = getFixturePath("file1." + extension);
+        var filepath2 = getFixturePath("file2." + extension);
 
         var expected = readFixture("differ");
         var actual = Differ.generate(filepath1.toString(), filepath2.toString());
