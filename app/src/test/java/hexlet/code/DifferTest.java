@@ -26,7 +26,7 @@ class DifferTest {
         var filepath1 = getFixturePath("file1." + extension);
         var filepath2 = getFixturePath("file2." + extension);
 
-        var expected = readFixture("differ");
+        var expected = readFixture("differStylish");
         var actual = Differ.generate(filepath1.toString(), filepath2.toString(), "stylish");
 
         assertEquals(expected, actual);
