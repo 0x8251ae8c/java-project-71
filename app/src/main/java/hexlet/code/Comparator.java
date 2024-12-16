@@ -22,16 +22,15 @@ public class Comparator {
             } else if (!firstMapContainsField && secondMapContainsField) {
                 value.put("status", "added");
                 value.put("newValue", map2.get(field));
+            } else if (isFieldValuesEqual(map1.get(field), map2.get(field))) {
+                value.put("status", "without change");
+                value.put("oldValue", map1.get(field));
             } else {
-                if (isFieldValuesEqual(map1.get(field), map2.get(field))) {
-                    value.put("status", "without change");
-                    value.put("oldValue", map1.get(field));
-                } else {
-                    value.put("status", "changed");
-                    value.put("oldValue", map1.get(field));
-                    value.put("newValue", map2.get(field));
-                }
+                value.put("status", "changed");
+                value.put("oldValue", map1.get(field));
+                value.put("newValue", map2.get(field));
             }
+
             result.put(field, value);
         }
         return result;
