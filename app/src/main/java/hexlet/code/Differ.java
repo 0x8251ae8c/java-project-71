@@ -20,6 +20,10 @@ public class Differ {
         return Formatter.format(compareResult, format);
     }
 
+    public static String generate(String filepath1, String filepath2) throws Exception {
+        return generate(filepath1, filepath2, "stylish");
+    }
+
     private static String readFile(String filepath) throws Exception {
         Path path = Paths.get(filepath).toAbsolutePath().normalize();
 

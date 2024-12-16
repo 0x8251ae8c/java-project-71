@@ -36,6 +36,11 @@ class DifferTest {
         var actual2 = Differ.generate(filepath1.toString(), filepath2.toString(), "plain");
 
         assertEquals(expected2, actual2);
+
+        var expected3 = Differ.generate(filepath1.toString(), filepath2.toString(), "stylish");
+        var actual3 = Differ.generate(filepath1.toString(), filepath2.toString());
+
+        assertEquals(expected3, actual3);
     }
 
     @Test
