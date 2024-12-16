@@ -1,37 +1,32 @@
 package hexlet.code.formatters;
 
-import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
 public class Stylish {
-    public static String format(List<Map<String, Object>> compareResult) {
+    public static String format(Map<String, Map<String, Object>> compareResult) {
         var sj = new StringJoiner("\n");
 
-        for (var item : compareResult) {
-            var field = item.get("field").toString();
-            var status = item.get("status").toString();
-            var value = item.get("value").toString();
+        for (var item : compareResult.entrySet()) {
+            var fieldName = item.getKey();
+            var fieldValue = item.getValue();
+            var fieldStatus = fieldValue.get("status").toString();
 
-            switch (status) {
-                case "removed":
-                    sj.add("  - " + field + ": " + value);
-                    break;
-                case "added":
-                    sj.add("  + " + field + ": " + value);
-                    break;
-                case "without change":
-                    sj.add("    " + field + ": " + value);
-                    break;
-                case "changed":
-                    var newValue = item.get("newValue").toString();
-                    sj.add("  - " + field + ": " + value);
-                    sj.add("  + " + field + ": " + newValue);
-                    break;
-                default:
-                    throw new RuntimeException("Unknown status of field");
-            }
+            var line = switch (fieldStatus) {
+                case "removed" -> "  - " + fieldName + ": " + getValueAsString(fieldValue, "oldValue");
+                case "added" -> "  + " + fieldName + ": " + getValueAsString(fieldValue, "newValue");
+                case "without change" -> "    " + fieldName + ": " + getValueAsString(fieldValue, "oldValue");
+                case "changed" -> "  - " + fieldName + ": " + getValueAsString(fieldValue, "oldValue") + "\n"
+                        + "  + " + fieldName + ": " + getValueAsString(fieldValue, "newValue");
+                default -> throw new RuntimeException("Unknown status of fieldName");
+            };
+            sj.add(line);
         }
         return "{\n" + sj + "\n}";
+    }
+
+    private static String getValueAsString(Map<String, Object> map, String key) {
+        var value = map.get(key);
+        return value == null ? "null" : value.toString();
     }
 }
