@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -35,5 +36,16 @@ class DifferTest {
         var actual2 = Differ.generate(filepath1.toString(), filepath2.toString(), "plain");
 
         assertEquals(expected2, actual2);
+    }
+
+    @Test
+    public void testJsonDiffer() throws Exception {
+        var filepath1 = getFixturePath("fileForJsonFormatter1.json");
+        var filepath2 = getFixturePath("fileForJsonFormatter2.json");
+
+        var expected1 = readFixture("differJson.json");
+        var actual1 = Differ.generate(filepath1.toString(), filepath2.toString(), "json");
+
+        assertEquals(expected1, actual1);
     }
 }
