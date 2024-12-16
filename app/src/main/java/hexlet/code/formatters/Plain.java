@@ -31,18 +31,14 @@ public class Plain {
     private static String getValueAsString(Map<String, Object> map, String key) {
         var value = map.get(key);
 
-        if (value.equals("null")) {
+        if (value == null) {
             return "null";
         }
-        if (value instanceof String) {
-            return "'" + value + "'";
+
+        if (!value.getClass().toString().contains("java.lang")) {
+            return "[complex value]";
         }
-        if (value instanceof Boolean || value instanceof Integer || value instanceof Long) {
-            return value.toString();
-        }
-        if (value instanceof Float || value instanceof Double) {
-            return value.toString();
-        }
-        return "[complex value]";
+
+        return value instanceof String ? "'" + value + "'" : value.toString();
     }
 }

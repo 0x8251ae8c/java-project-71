@@ -9,43 +9,40 @@ import java.util.TreeSet;
 public class Comparator {
     public static Map<String, Map<String, Object>> compare(Map<String, Object> map1, Map<String, Object> map2) {
         var result = new TreeMap<String, Map<String, Object>>();
-        var keys = makeSetOfKeys(map1, map2);
+        var fields = makeSetOfKeys(map1, map2);
 
-        for (var key : keys) {
-            var firstMapContainsKey = map1.containsKey(key);
-            var secondMapContainsKey = map2.containsKey(key);
+        for (var field : fields) {
+            var firstMapContainsField = map1.containsKey(field);
+            var secondMapContainsField = map2.containsKey(field);
             var value = new LinkedHashMap<String, Object>();
 
-            var oldValue = map1.getOrDefault(key, null);
-            var newValue = map2.getOrDefault(key, null);
-
-            if (firstMapContainsKey && !secondMapContainsKey) {
+            if (firstMapContainsField && !secondMapContainsField) {
                 value.put("status", "removed");
-                value.put("oldValue", oldValue);
-            } else if (!firstMapContainsKey && secondMapContainsKey) {
+                value.put("oldValue", map1.get(field));
+            } else if (!firstMapContainsField && secondMapContainsField) {
                 value.put("status", "added");
-                value.put("newValue", newValue);
+                value.put("newValue", map2.get(field));
             } else {
-                if (oldValue == null) {
-                    oldValue = "null";
-                }
-                if (newValue == null) {
-                    newValue = "null";
-                }
-                if (oldValue.equals(newValue)) {
+                if (isFieldValuesEqual(map1.get(field), map2.get(field))) {
                     value.put("status", "without change");
-                    value.put("oldValue", oldValue);
+                    value.put("oldValue", map1.get(field));
                 } else {
                     value.put("status", "changed");
-                    value.put("oldValue", oldValue);
-                    value.put("newValue", newValue);
+                    value.put("oldValue", map1.get(field));
+                    value.put("newValue", map2.get(field));
                 }
             }
-            result.put(key, value);
+            result.put(field, value);
         }
         return result;
     }
 
+    private static boolean isFieldValuesEqual(Object obj1, Object obj2) {
+        if (obj1 == null || obj2 == null) {
+            return obj1 == obj2;
+        }
+        return obj1.equals(obj2);
+    }
     private static Set<String> makeSetOfKeys(Map<String, Object> map1, Map<String, Object> map2) {
         var keys = new TreeSet<String>();
         keys.addAll(map1.keySet());
