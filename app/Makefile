@@ -10,7 +10,7 @@ build:
 	@./gradlew clean build installDist
 
 lint:
-	@./gradlew check
+	@./gradlew checkStyleMain checkStyleTest
 
 test:
 	@./gradlew test
