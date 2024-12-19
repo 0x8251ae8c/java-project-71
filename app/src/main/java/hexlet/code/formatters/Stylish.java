@@ -13,20 +13,15 @@ public class Stylish {
             var fieldStatus = fieldValue.get("status").toString();
 
             var line = switch (fieldStatus) {
-                case "removed" -> "  - " + fieldName + ": " + getValueAsString(fieldValue, "oldValue");
-                case "added" -> "  + " + fieldName + ": " + getValueAsString(fieldValue, "newValue");
-                case "without change" -> "    " + fieldName + ": " + getValueAsString(fieldValue, "oldValue");
-                case "changed" -> "  - " + fieldName + ": " + getValueAsString(fieldValue, "oldValue") + "\n"
-                        + "  + " + fieldName + ": " + getValueAsString(fieldValue, "newValue");
+                case "removed" -> "  - " + fieldName + ": " + fieldValue.get("oldValue");
+                case "added" -> "  + " + fieldName + ": " + fieldValue.get("newValue");
+                case "without change" -> "    " + fieldName + ": " + fieldValue.get("oldValue");
+                case "changed" -> "  - " + fieldName + ": " + fieldValue.get("oldValue") + "\n"
+                        + "  + " + fieldName + ": " + fieldValue.get("newValue");
                 default -> throw new RuntimeException("Unknown status of fieldName");
             };
             sj.add(line);
         }
         return "{\n" + sj + "\n}";
-    }
-
-    private static String getValueAsString(Map<String, Object> map, String key) {
-        var value = map.get(key);
-        return value == null ? "null" : value.toString();
     }
 }
