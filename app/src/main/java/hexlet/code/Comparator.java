@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Objects;
 
 public class Comparator {
     public static Map<String, Map<String, Object>> compare(Map<String, Object> map1, Map<String, Object> map2) {
@@ -22,7 +23,7 @@ public class Comparator {
             } else if (!firstMapContainsField && secondMapContainsField) {
                 value.put("status", "added");
                 value.put("newValue", map2.get(field));
-            } else if (isFieldValuesEqual(map1.get(field), map2.get(field))) {
+            } else if (Objects.equals(map1.get(field), map2.get(field))) {
                 value.put("status", "without change");
                 value.put("oldValue", map1.get(field));
             } else {
@@ -36,12 +37,6 @@ public class Comparator {
         return result;
     }
 
-    private static boolean isFieldValuesEqual(Object obj1, Object obj2) {
-        if (obj1 == null || obj2 == null) {
-            return obj1 == obj2;
-        }
-        return obj1.equals(obj2);
-    }
     private static Set<String> makeSetOfKeys(Map<String, Object> map1, Map<String, Object> map2) {
         var keys = new TreeSet<String>();
         keys.addAll(map1.keySet());
