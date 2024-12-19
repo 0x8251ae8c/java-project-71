@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -27,30 +26,21 @@ class DifferTest {
         var filepath1 = getFixturePath("file1." + extension);
         var filepath2 = getFixturePath("file2." + extension);
 
-        var expected1 = readFixture("differStylish");
-        var actual1 = Differ.generate(filepath1.toString(), filepath2.toString(), "stylish");
+        var expectedStylishDiffer = readFixture("differStylish");
+        var actualStylishDiffer1 = Differ.generate(filepath1.toString(), filepath2.toString(), "stylish");
+        var actualStylishDiffer2 = Differ.generate(filepath1.toString(), filepath2.toString());
 
-        assertEquals(expected1, actual1);
+        assertEquals(expectedStylishDiffer, actualStylishDiffer1);
+        assertEquals(expectedStylishDiffer, actualStylishDiffer2);
 
-        var expected2 = readFixture("differPlain");
-        var actual2 = Differ.generate(filepath1.toString(), filepath2.toString(), "plain");
+        var expectedPlainDiffer = readFixture("differPlain");
+        var actualPlainDiffer = Differ.generate(filepath1.toString(), filepath2.toString(), "plain");
 
-        assertEquals(expected2, actual2);
+        assertEquals(expectedPlainDiffer, actualPlainDiffer);
 
-        var expected3 = Differ.generate(filepath1.toString(), filepath2.toString(), "stylish");
-        var actual3 = Differ.generate(filepath1.toString(), filepath2.toString());
+        var expectedJsonDiffer = readFixture("differJson");
+        var actualJsonDiffer = Differ.generate(filepath1.toString(), filepath2.toString(), "json");
 
-        assertEquals(expected3, actual3);
-    }
-
-    @Test
-    public void testJsonDiffer() throws Exception {
-        var filepath1 = getFixturePath("fileForJsonFormatter1.json");
-        var filepath2 = getFixturePath("fileForJsonFormatter2.json");
-
-        var expected1 = readFixture("differJson.json");
-        var actual1 = Differ.generate(filepath1.toString(), filepath2.toString(), "json");
-
-        assertEquals(expected1, actual1);
+        assertEquals(expectedJsonDiffer, actualJsonDiffer);
     }
 }
