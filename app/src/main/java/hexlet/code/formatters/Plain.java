@@ -1,5 +1,6 @@
 package hexlet.code.formatters;
 
+import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -18,9 +19,9 @@ public class Plain {
 
             var line = "Property '" + fieldName + switch (fieldStatus) {
                 case "removed" -> "' was removed";
-                case "added" -> "' was added with value: " + getValueAsString(fieldValue, "newValue");
-                case "changed" -> "' was updated. From " + getValueAsString(fieldValue, "oldValue") + " to "
-                        + getValueAsString(fieldValue, "newValue");
+                case "added" -> "' was added with value: " + getValueAsString(fieldValue.get("newValue"));
+                case "changed" -> "' was updated. From " + getValueAsString(fieldValue.get("oldValue")) + " to "
+                        + getValueAsString(fieldValue.get("newValue"));
                 default -> throw new RuntimeException("Unknown status of fieldName");
             };
             sj.add(line);
@@ -28,17 +29,19 @@ public class Plain {
         return sj.toString();
     }
 
-    private static String getValueAsString(Map<String, Object> map, String key) {
-        var value = map.get(key);
-
+    private static String getValueAsString(Object value) {
         if (value == null) {
             return "null";
         }
 
-        if (!value.getClass().toString().contains("java.lang")) {
+        if (value instanceof Map || value instanceof List) {
             return "[complex value]";
         }
 
-        return value instanceof String ? "'" + value + "'" : value.toString();
+        if (value instanceof String) {
+            return "'" + value + "'";
+        }
+
+        return value.toString();
     }
 }
