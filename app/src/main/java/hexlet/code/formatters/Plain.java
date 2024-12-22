@@ -1,33 +1,39 @@
 package hexlet.code.formatters;
 
+import hexlet.code.ComparatorKeys;
+
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import static hexlet.code.ComparatorStatuses.ADDED;
+import static hexlet.code.ComparatorStatuses.REMOVED;
+import static hexlet.code.ComparatorStatuses.CHANGED;
+import static hexlet.code.ComparatorStatuses.UNCHANGED;
 
 public class Plain {
     private static final String TEMPLATE_REMOVED = "Property '%s' was removed";
     private static final String TEMPLATE_ADDED = "Property '%s' was added with value: %s";
     private static final String TEMPLATE_CHANGED = "Property '%s' was updated. From %s to %s";
 
-    public static String format(Map<String, Map<String, Object>> compareResult) {
+    public static String format(List<Map<ComparatorKeys, Object>> compareResult) {
         var sj = new StringJoiner("\n");
 
-        for (var item : compareResult.entrySet()) {
-            var fieldName = item.getKey();
-            var fieldValue = item.getValue();
-            var fieldStatus = fieldValue.get("status").toString();
+        for (var map : compareResult) {
+            var field = map.get(ComparatorKeys.FIELD);
+            var status = map.get(ComparatorKeys.STATUS);
 
-            if (fieldStatus.equals("without change")) {
+            if (status.equals(UNCHANGED)) {
                 continue;
             }
 
-            var line = switch (fieldStatus) {
-                case "removed" -> String.format(TEMPLATE_REMOVED, fieldName);
-                case "added" -> String.format(TEMPLATE_ADDED, fieldName,
-                        getValueAsString(fieldValue.get("newValue")));
-                case "changed" -> String.format(TEMPLATE_CHANGED, fieldName,
-                        getValueAsString(fieldValue.get("oldValue")),
-                        getValueAsString(fieldValue.get("newValue")));
+            var line = switch (status) {
+                case REMOVED -> String.format(TEMPLATE_REMOVED, field);
+                case ADDED -> String.format(TEMPLATE_ADDED, field,
+                        getValueAsString(map.get(ComparatorKeys.NEW_VALUE)));
+                case CHANGED -> String.format(TEMPLATE_CHANGED, field,
+                        getValueAsString(map.get(ComparatorKeys.OLD_VALUE)),
+                        getValueAsString(map.get(ComparatorKeys.NEW_VALUE)));
                 default -> throw new RuntimeException("Unknown status of fieldName");
             };
             sj.add(line);

@@ -1,38 +1,38 @@
 package hexlet.code;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Objects;
+import java.util.TreeSet;
+import java.util.Set;
 
 public class Comparator {
-    public static Map<String, Map<String, Object>> compare(Map<String, Object> map1, Map<String, Object> map2) {
-        var result = new TreeMap<String, Map<String, Object>>();
+    public static List<Map<ComparatorKeys, Object>> compare(Map<String, Object> map1, Map<String, Object> map2) {
+        var result = new ArrayList<Map<ComparatorKeys, Object>>();
         var fields = makeSetOfKeys(map1, map2);
 
         for (var field : fields) {
             var firstMapContainsField = map1.containsKey(field);
             var secondMapContainsField = map2.containsKey(field);
-            var value = new LinkedHashMap<String, Object>();
+            var value = new HashMap<ComparatorKeys, Object>(Map.of(ComparatorKeys.FIELD, field));
 
             if (firstMapContainsField && !secondMapContainsField) {
-                value.put("status", "removed");
-                value.put("oldValue", map1.get(field));
+                value.put(ComparatorKeys.STATUS, ComparatorStatuses.REMOVED);
+                value.put(ComparatorKeys.OLD_VALUE, map1.get(field));
             } else if (!firstMapContainsField && secondMapContainsField) {
-                value.put("status", "added");
-                value.put("newValue", map2.get(field));
+                value.put(ComparatorKeys.STATUS, ComparatorStatuses.ADDED);
+                value.put(ComparatorKeys.NEW_VALUE, map2.get(field));
             } else if (Objects.equals(map1.get(field), map2.get(field))) {
-                value.put("status", "without change");
-                value.put("oldValue", map1.get(field));
+                value.put(ComparatorKeys.STATUS, ComparatorStatuses.UNCHANGED);
+                value.put(ComparatorKeys.OLD_VALUE, map1.get(field));
             } else {
-                value.put("status", "changed");
-                value.put("oldValue", map1.get(field));
-                value.put("newValue", map2.get(field));
+                value.put(ComparatorKeys.STATUS, ComparatorStatuses.CHANGED);
+                value.put(ComparatorKeys.OLD_VALUE, map1.get(field));
+                value.put(ComparatorKeys.NEW_VALUE, map2.get(field));
             }
-
-            result.put(field, value);
+            result.add(value);
         }
         return result;
     }
