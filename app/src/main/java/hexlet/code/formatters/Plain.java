@@ -5,6 +5,10 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 public class Plain {
+    private static final String TEMPLATE_REMOVED = "Property '%s' was removed";
+    private static final String TEMPLATE_ADDED = "Property '%s' was added with value: %s";
+    private static final String TEMPLATE_CHANGED = "Property '%s' was updated. From %s to %s";
+
     public static String format(Map<String, Map<String, Object>> compareResult) {
         var sj = new StringJoiner("\n");
 
@@ -17,11 +21,13 @@ public class Plain {
                 continue;
             }
 
-            var line = "Property '" + fieldName + switch (fieldStatus) {
-                case "removed" -> "' was removed";
-                case "added" -> "' was added with value: " + getValueAsString(fieldValue.get("newValue"));
-                case "changed" -> "' was updated. From " + getValueAsString(fieldValue.get("oldValue")) + " to "
-                        + getValueAsString(fieldValue.get("newValue"));
+            var line = switch (fieldStatus) {
+                case "removed" -> String.format(TEMPLATE_REMOVED, fieldName);
+                case "added" -> String.format(TEMPLATE_ADDED, fieldName,
+                        getValueAsString(fieldValue.get("newValue")));
+                case "changed" -> String.format(TEMPLATE_CHANGED, fieldName,
+                        getValueAsString(fieldValue.get("oldValue")),
+                        getValueAsString(fieldValue.get("newValue")));
                 default -> throw new RuntimeException("Unknown status of fieldName");
             };
             sj.add(line);
